@@ -1,23 +1,26 @@
-require "jpstock"
+require "nokogiri"
+require "open-uri"
 require "ruboty"
 
 module Ruboty
   module Handlers
     class StockPriceJp < Base
-      on /stock_price (?<jp_ticker_symbol>.*?)\z/, name: 'stock_price', description: 'Fetch stock price'
+      on /stock_price (?<ticker>.*?)\z/, name: 'stock_price', description: 'Fetch stock price from Google Finance'
 
       def stock_price(message)
-        price = fetch_price(message['jp_ticker_symbol'])
-        message.reply(price) if price
-      end
+        url = "https://www.google.com/finance?q=#{message['ticker']}"
 
-      private
+        charset = nil
+        html = open(url) do |f|
+          charset = f.charset
+          f.read
+        end
+        page = Nokogifi::HTML.parse(html, nil, charset)
 
-      def fetch_price(ticker)
-        fetch = JpStock.quote(code: ticker)
-        "#{fetch.company_name}: #{fetch.close}円"
-      rescue JpStock::QuoteException
-        nil
+        price = page.css('meta[itemprop="price"]').first['content']
+        company = page.css('meta[itemprop="name"]').first['content']
+
+        message.reply("#{company}: #{price}")
       end
     end
   end
