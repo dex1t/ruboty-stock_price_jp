@@ -15,7 +15,7 @@ module Ruboty
           charset = f.charset
           f.read
         end
-        page = Nokogifi::HTML.parse(html, nil, charset)
+        page = Nokogiri::HTML.parse(html, nil, charset)
 
         price = page.css('meta[itemprop="price"]').first['content']
         company = page.css('meta[itemprop="name"]').first['content']
