@@ -12,5 +12,5 @@ gem "ruboty-stock_price_jp"
 ## Usage
 
 ```
-@ruboty stock_price <jp_ticker_symbol>
+@ruboty stock_price <ticker>
 ```
