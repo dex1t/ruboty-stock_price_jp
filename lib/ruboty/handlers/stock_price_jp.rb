@@ -19,8 +19,16 @@ module Ruboty
 
         price = page.css('meta[itemprop="price"]').first['content']
         company = page.css('meta[itemprop="name"]').first['content']
+        change = page.css('meta[itemprop="priceChange"]').first['content']
+        percent = page.css('meta[itemprop="priceChangePercent"]').first['content']
+        emoji = case price[0]
+                when '+'
+                  :chart_with_upwards_trend:
+                when '-'
+                  :chart_with_downwards_trend:
+                end
 
-        message.reply("#{company}: #{price}")
+        message.reply("*#{company}*: #{price} _#{change}(#{percent}%)_ #{emoji}")
       end
     end
   end
