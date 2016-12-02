@@ -23,9 +23,9 @@ module Ruboty
         percent = page.css('meta[itemprop="priceChangePercent"]').first['content']
         emoji = case price[0]
                 when '+'
-                  :chart_with_upwards_trend:
+                  ':chart_with_upwards_trend:'
                 when '-'
-                  :chart_with_downwards_trend:
+                  ':chart_with_downwards_trend:'
                 end
 
         message.reply("*#{company}*: #{price} _#{change}(#{percent}%)_ #{emoji}")
